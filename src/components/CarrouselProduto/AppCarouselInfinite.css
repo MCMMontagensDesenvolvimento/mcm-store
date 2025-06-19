@@ -1,0 +1,126 @@
+@keyframes inf-scroll {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(calc(-400px * 4));
+  }
+}
+
+.inf-carousel-wrapper {
+  width: 100%;
+  margin-top: 2rem;
+  display: flex;
+  justify-content: center;
+  background: #E3E3E3;
+  box-sizing: border-box;
+  padding: 1rem 0;
+}
+
+.inf-slider {
+  background: #FFFFFF;
+  box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.125);
+  height: 300px;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+
+
+.inf-logo-wrapper {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 3;
+}
+
+.inf-logo {
+  max-width: 954px;
+  max-height: 228px;
+}
+
+.inf-slider::before,
+.inf-slider::after {
+  content: "";
+  position: absolute;
+  width: 200px;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.inf-slider::before {
+  left: 0;
+  top: 0;
+  background: linear-gradient(to right, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%);
+}
+
+.inf-slider::after {
+  right: 0;
+  top: 0;
+  transform: rotateZ(180deg);
+  background: linear-gradient(to right, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%);
+}
+
+.inf-slide-track {
+  display: flex;
+  width: calc(400px * 8);
+  animation: inf-scroll 40s linear infinite;
+}
+
+.inf-slide {
+  height: 300px;
+  width: 400px;
+  flex-shrink: 0;
+}
+
+.inf-slide__img {
+  display: block;
+  width: 400px;
+  height: 300px;
+  object-fit: cover;
+  opacity: 0.5;
+}
+
+@media (max-width: 768px) {
+  @keyframes inf-scroll-mobile {
+    0% {
+      transform: translateX(0);
+    }
+
+    100% {
+      transform: translateX(calc(-250px * 4));
+    }
+  }
+
+  .inf-slider {
+    height: 200px;
+  }
+
+  .inf-logo-wrapper {
+    /* Em mobile, mantém o logo centralizado */
+  }
+
+  .inf-logo {
+    max-width: 150px;
+    max-height: 75px;
+  }
+
+  .inf-slide-track {
+    width: calc(250px * 8);
+    animation: inf-scroll-mobile 40s linear infinite;
+  }
+
+  .inf-slide {
+    height: 200px;
+    width: 250px;
+  }
+
+  .inf-slide__img {
+    width: 250px;
+    height: 200px;
+  }
+}
