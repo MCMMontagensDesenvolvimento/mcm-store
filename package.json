@@ -24,7 +24,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
-  "proxy": "https://apihomolog.mcmmontagens.com.br",
+  "proxy": "https://api-homolog.mcmmontagens.com.br",
   "eslintConfig": {
     "extends": [
       "react-app",

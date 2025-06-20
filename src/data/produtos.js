@@ -38,7 +38,7 @@ export const produtos = [
     categoria: 'Fardamentos',
     imagens: ['/img/camisa_social_branca_masculina.png'],
     tamanhos: ['P', 'M', 'G', 'GG', 'XG', 'EXG', 'EXGG'],
-    preco: '94,00',
+    preco: '33,60',
   },
   {
     id: '6',
@@ -46,7 +46,7 @@ export const produtos = [
     categoria: 'Fardamentos',
     imagens: ['/img/camisa_social_feminina.png'],
     tamanhos: ['P', 'M', 'G', 'GG', 'XG', 'EXG', 'EXGG'],
-    preco: '84,00',
+    preco: '33,60',
   },
   {
     id: '7',

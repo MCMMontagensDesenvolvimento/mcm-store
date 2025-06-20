@@ -20,7 +20,9 @@ export function AuthProvider({ children }) {
    * Carrega a lista de contratados UMA VEZ e monta um Map para busca rápida.
    * A chave do Map será `${ID}-${CPF}` (ambos sem pontuação).
    */
-  async function inicializaMapaContratados() {
+   
+
+  async function inicializaMapaContratados(idDigitado, cpfDigitado) {
     // 1) Se já tiver sido carregado, retorna imediatamente
     if (contratadosMapRef.current) {
       return contratadosMapRef.current;
@@ -46,9 +48,9 @@ export function AuthProvider({ children }) {
     try {
       fetchingRef.current = true;
       setCarregandoContratados(true);
-
+      const API = process.env.REACT_APP_API_BASE_URL;
       console.log('[AuthContext] Iniciando carregamento dos contratados...');
-      const resposta = await fetch('/api/apdata/contratados/ativos', {
+      const resposta = await fetch(`${API}/apdata/contratados/ativos?cpf=${cpfDigitado}&nr=${idDigitado}`, {
         method: 'GET',
         headers: {
           Accept: 'application/json',
@@ -137,7 +139,7 @@ export function AuthProvider({ children }) {
       );
 
       // Garante que o Map esteja inicializado
-      const mapa = await inicializaMapaContratados();
+      const mapa = await inicializaMapaContratados(idInput, cpfInput );
       const chaveProcurada = `${idDigitado}-${cpfDigitado}`;
       const encontrado = mapa.get(chaveProcurada);
 
