@@ -48,9 +48,10 @@ export function AuthProvider({ children }) {
     try {
       fetchingRef.current = true;
       setCarregandoContratados(true);
-      const API = process.env.REACT_APP_API_BASE_URL;
+      const API = process.env.REACT_APP_API_BASE_URL;  
       console.log('[AuthContext] Iniciando carregamento dos contratados...');
       const resposta = await fetch(`/ativos.php?cpf=${cpfDigitado}&nr=${idDigitado}`, {
+      // const resposta = await fetch(`/api/apdata/contratados/ativos?cpf=${cpfDigitado}&nr=${idDigitado}`, {
         method: 'GET',
         headers: {
           Accept: 'application/json',
