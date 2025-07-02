@@ -40,6 +40,13 @@ export function AppCarousel() {
         <Carousel.Item>
           <img
             style={imgStyle}
+            src="/img/lancamentos.png"
+            alt="Hero 2"
+          />
+        </Carousel.Item>
+        <Carousel.Item>
+          <img
+            style={imgStyle}
             src="/img/hero_section.png"
             alt="Hero 1"
           />
