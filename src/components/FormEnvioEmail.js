@@ -41,6 +41,7 @@ export function FormEnvioEmail() {
     // Parâmetros que o template do EmailJS espera receber
     const templateParams = {
       to_email: destinatario.trim(),            // no template do EmailJS use {{to_email}}
+      id_contratado: idContrarado,              // no template do EmailJS use {{id_contratado}}
       nome_completo: nome.trim(),               // no template use {{nome_completo}}
       cpf: cpf.replace(/\D/g, ''),              // no template use {{cpf}}
       telefone: telefone.replace(/\D/g, ''),    // no template use {{telefone}}
@@ -78,6 +79,17 @@ export function FormEnvioEmail() {
             type="text"
             value={nome}
             onChange={(e) => setNome(e.target.value)}
+            required
+            style={styles.input}
+          />
+        </label>
+
+        <label style={styles.label}>
+          Id Contratado:
+          <input
+            type="text"
+            value={id_contratado}
+            onChange={(e) => setIdContratado(e.target.value)}
             required
             style={styles.input}
           />

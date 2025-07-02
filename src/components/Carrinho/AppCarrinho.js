@@ -18,6 +18,7 @@ export function AppCarrinho() {
 
   // Campos colaborador
   const nomeCompleto    = usuario?.CON_DssNome       || '';
+  const idContratado    = usuario?.CON_CdiContratado || '';
   const cpfUsuario      = usuario?.CON_NusCICNumero  || '';
   const idCentroCusto   = usuario?.CON_CdiCentroCusto|| '';
   const nomeCentroCusto = usuario?.CCU_D1sCentroCusto|| '';
@@ -114,6 +115,7 @@ export function AppCarrinho() {
 
     const templateParams = {
       to_email:         emailDestino.trim(),
+      id_contratado:    idContratado,     
       nome_completo:    nomeCompleto,
       cpf:              cpfUsuario.replace(/\D/g, ''),
       telefone:         telefone.replace(/\D/g, ''),
@@ -227,6 +229,10 @@ export function AppCarrinho() {
                   <div className="mb-3">
                     <label className="form-label">Nome Completo</label>
                     <input className="form-control" readOnly value={nomeCompleto}/>
+                  </div>
+                  <div className="mb-3">
+                    <label className="form-label">Id Contratado</label>
+                    <input className="form-control" readOnly value={idContratado}/>
                   </div>
                   <div className="mb-3">
                     <label className="form-label">CPF</label>
