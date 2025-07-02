@@ -1,70 +1,125 @@
 // src/components/DetalheProduto.jsx
 
 import React, { useState } from 'react';
-import { useCarrinho } from '../Context/ContextoCarrinho.js';
-import { useNavigate } from 'react-router-dom';
+import { useCarrinho }   from '../Context/ContextoCarrinho.js';
+import { useNavigate }   from 'react-router-dom';
 
 export function DetalheProduto({ produto }) {
   const [indiceImagemPrincipal, setIndiceImagemPrincipal] = useState(0);
-  const [tamanhoSelecionado, setTamanhoSelecionado] = useState(
-    produto.tamanhos && produto.tamanhos.length > 0
-      ? produto.tamanhos[0]
-      : ''
+  const [tamanhoSelecionado,   setTamanhoSelecionado]   = useState(
+    produto.tamanhos?.[0] ?? ''
   );
-  const [quantidade, setQuantidade] = useState(1);
+  const [quantidade, setQuantidade]     = useState(1);
+  const [showModal,   setShowModal]     = useState(false);
 
   const { adicionarAoCarrinho } = useCarrinho();
   const navigate = useNavigate();
 
-  const alterarQuantidade = (delta) => {
-    setQuantidade(q => {
-      const novo = q + delta;
-      return novo < 1 ? 1 : novo;
-    });
+  // Ajusta qtd
+  const alterarQuantidade = delta => {
+    setQuantidade(q => Math.max(1, q + delta));
   };
 
+  // Quando clica “Adicionar ao Carrinho”
   const handleAdicionarAoCarrinho = () => {
     adicionarAoCarrinho({
-      id: produto.id,
-      titulo: produto.titulo,
-      preco: parseFloat(String(produto.preco).replace(',', '.')),
-      imagem: produto.imagens[0],
+      id:           produto.id,
+      titulo:       produto.titulo,
+      preco:        parseFloat(String(produto.preco).replace(',', '.')),
+      imagem:       produto.imagens[0],
       corOuTamanho: tamanhoSelecionado,
       quantidade,
     });
+    setShowModal(true);
   };
 
+  // Comprar agora leva direto ao carrinho
   const handleComprarAgora = () => {
     adicionarAoCarrinho({
-      id: produto.id,
-      titulo: produto.titulo,
-      preco: parseFloat(String(produto.preco).replace(',', '.')),
-      imagem: produto.imagens[0],
+      id:           produto.id,
+      titulo:       produto.titulo,
+      preco:        parseFloat(String(produto.preco).replace(',', '.')),
+      imagem:       produto.imagens[0],
       corOuTamanho: tamanhoSelecionado,
       quantidade,
     });
     navigate('/carrinho');
   };
 
+  // Estilos do modal
+  const overlayStyle = {
+    position:        'fixed',
+    top:             0,
+    left:            0,
+    width:           '100vw',
+    height:          '100vh',
+    backgroundColor: 'rgba(0,0,0,0.4)',
+    display:         'flex',
+    alignItems:      'center',
+    justifyContent:  'center',
+    zIndex:          1000,
+  };
+  const modalStyle = {
+    backgroundColor: '#fff',
+    borderRadius:    '8px',
+    padding:         '24px',
+    maxWidth:        '420px',
+    width:           '90%',
+    textAlign:       'center',
+    boxShadow:       '0 2px 10px rgba(0,0,0,0.2)',
+  };
+  const imgStyle = {
+    width:           '100px',
+    height:          '100px',
+    objectFit:       'cover',
+    borderRadius:    '4px',
+    marginBottom:    '16px',
+  };
+  const titleStyle = {
+    marginBottom:    '16px',
+    fontSize:        '1.1rem',
+    color:           '#333',
+  };
+  const btnGroup = {
+    display:         'flex',
+    gap:             '8px',
+    justifyContent:  'center',
+    marginTop:       '16px',
+  };
+  const btnStyle = {
+    flex:            1,
+    padding:         '8px 12px',
+    border:          'none',
+    borderRadius:    '4px',
+    cursor:          'pointer',
+    fontWeight:      600,
+  };
+  const btnContinuar = {
+    ...btnStyle,
+    backgroundColor: '#ddd',
+    color:           '#333',
+  };
+  const btnCarrinho = {
+    ...btnStyle,
+    backgroundColor: '#FE5A17',
+    color:           '#fff',
+  };
+
   return (
     <div style={{ ...estilos.container, marginTop: '80px' }}>
-      {/* Botão “Voltar” */}
-      <button
-        onClick={() => window.history.back()}
-        style={estilos.botaoVoltar}
-      >
+      {/* Voltar */}
+      <button onClick={() => window.history.back()} style={estilos.botaoVoltar}>
         ← Voltar
       </button>
 
       <div style={estilos.wrapperConteudo}>
-        {/* === Galeria de Imagens === */}
+        {/* Galeria */}
         <div style={estilos.galeria}>
           <img
             src={produto.imagens[indiceImagemPrincipal]}
             alt={produto.titulo}
             style={estilos.imagemPrincipal}
           />
-
           <div style={estilos.wrapperMiniaturas}>
             {produto.imagens.map((url, idx) => (
               <img
@@ -84,7 +139,7 @@ export function DetalheProduto({ produto }) {
           </div>
         </div>
 
-        {/* === Detalhes do Produto === */}
+        {/* Detalhes */}
         <div style={estilos.detalhes}>
           <h1 style={estilos.titulo}>{produto.titulo}</h1>
           <span style={estilos.categoria}>{produto.categoria}</span>
@@ -94,16 +149,15 @@ export function DetalheProduto({ produto }) {
             <span style={estilos.valorPreco}>R$ {produto.preco}</span>
           </div>
 
-          {/* —— AQUI COMEÇAM AS DUAS LINHAS NOVAS PARA EXIBIR A DESCRIÇÃO E DIMENSÃO —— */}
           {produto.descricao && (
             <p style={estilos.descricao}>{produto.descricao}</p>
           )}
           {produto.dimensao && (
             <p style={estilos.dimensao}>Dimensão: {produto.dimensao}</p>
           )}
-          {/* —— FIM DAS DUAS LINHAS NOVAS —— */}
 
-          {produto.tamanhos && produto.tamanhos.length > 0 && (
+          {/* Tamanho */}
+          {produto.tamanhos?.length > 0 && (
             <div style={estilos.wrapperTamanho}>
               <label htmlFor="seletor-tamanho" style={estilos.labelTamanho}>
                 Tamanho:
@@ -123,35 +177,24 @@ export function DetalheProduto({ produto }) {
             </div>
           )}
 
+          {/* Quantidade */}
           <div style={estilos.wrapperQuantidade}>
             <label style={estilos.labelQuantidade}>Quantidade:</label>
             <div style={estilos.botoesQuantidade}>
-              <button
-                onClick={() => alterarQuantidade(-1)}
-                style={estilos.botaoQtde}
-              >
-                –
-              </button>
+              <button onClick={() => alterarQuantidade(-1)} style={estilos.botaoQtde}>–</button>
               <span style={estilos.valorQtde}>{quantidade}</span>
-              <button
-                onClick={() => alterarQuantidade(1)}
-                style={estilos.botaoQtde}
-              >
-                +
-              </button>
+              <button onClick={() => alterarQuantidade(1)}  style={estilos.botaoQtde}>+</button>
             </div>
           </div>
 
+          {/* Ações */}
           <div style={estilos.wrapperAcoes}>
-            {/* Botão Adicionar ao Carrinho */}
             <button
               onClick={handleAdicionarAoCarrinho}
               style={estilos.botaoAdicionarCarrinho}
             >
               Adicionar ao Carrinho
             </button>
-
-            {/* Botão Comprar Agora */}
             <button
               onClick={handleComprarAgora}
               style={estilos.botaoComprarAgora}
@@ -161,6 +204,36 @@ export function DetalheProduto({ produto }) {
           </div>
         </div>
       </div>
+
+      {/* Modal de confirmação */}
+      {showModal && (
+        <div style={overlayStyle}>
+          <div style={modalStyle}>
+            <img
+              src={produto.imagens[0]}
+              alt={produto.titulo}
+              style={imgStyle}
+            />
+            <div style={titleStyle}>
+              {produto.titulo} adicionado com sucesso!
+            </div>
+            <div style={btnGroup}>
+              <button
+                style={btnContinuar}
+                onClick={() => setShowModal(false)}
+              >
+                Continuar comprando
+              </button>
+              <button
+                style={btnCarrinho}
+                onClick={() => navigate('/carrinho')}
+              >
+                Ir para o Carrinho
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -243,14 +316,12 @@ const estilos = {
     fontWeight: '700',
     color: '#FE5A17',
   },
-  // Estilo adicional para a descrição (opcional)
   descricao: {
     fontSize: '1rem',
     color: '#444',
     lineHeight: '1.4',
-    margin: '1rem 0 0.5rem 0',
+    margin: '1rem 0 0.5rem',
   },
-  // Estilo adicional para a dimensão (opcional)
   dimensao: {
     fontSize: '0.9rem',
     color: '#666',

@@ -457,3 +457,4 @@ const styles = {
 // Injeta os keyframes de animação no CSS em tempo de execução
 const styleSheet = document.styleSheets[0];
 styleSheet.insertRule(styles.keyframes, styleSheet.cssRules.length);
+
